@@ -11,6 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.ParsedRequestListener;
+
+import org.json.JSONArray;
+
+import static android.widget.Toast.LENGTH_SHORT;
+
 public class loginactivity extends AppCompatActivity {
 EditText name,pass;
 Button login,signin;
@@ -42,25 +52,49 @@ String sname=name.getText().toString();
 String spass=pass.getText().toString();
 verifymodel v=new verifymodel(sname,spass);
 int count=d.verifyuser(v);
-if(count>0)
-{
+
     //SharedPreferences.Editor editor = sharedPreferences.edit();
-    SharedPreferences settings = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE );
-    SharedPreferences.Editor editor = settings.edit();
-    editor.putString("logged", "logged");
-    editor.commit();
-    Toast.makeText(getApplicationContext(), "Successfull Login", Toast.LENGTH_SHORT).show();
-    //storing the username and password
-    Toast.makeText(loginactivity.this,"Login Successfully",Toast.LENGTH_SHORT).show();
+//    SharedPreferences settings = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE );
+//    SharedPreferences.Editor editor = settings.edit();
+//    editor.putString("logged", "logged");
+//    editor.commit();
+//    Toast.makeText(getApplicationContext(), "Successfull Login", Toast.LENGTH_SHORT).show();
+//    //storing the username and password
+//    Toast.makeText(loginactivity.this,"Login Successfully",Toast.LENGTH_SHORT).show();
 
-Intent intent=new Intent(loginactivity.this,sidenavigation.class);
-startActivity(intent);
-}
-else
-{
-    Toast.makeText(loginactivity.this,"username or password is incorrect",Toast.LENGTH_SHORT).show();
+    AndroidNetworking.get("http://localhost:16345/api/signin?name=rohit&pass=rohit")
+            .addQueryParameter("syncDateTime",null)
+            .setTag("test")
+            .setPriority(Priority.LOW)
+            .build()
+            .getAsObject(checkuser.class, new ParsedRequestListener<checkuser>() {
+                @Override
+                public void onResponse(checkuser response) {
+                    if(response.getMessage()=="not successfull")
+                    {
+                        Toast.makeText(loginactivity.this,"no not working",LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(loginactivity.this,"working",LENGTH_SHORT).show();
+                    }
+                }
 
-}
+                @Override
+                public void onError(ANError anError) {
+                    Toast.makeText(loginactivity.this,anError.getMessage(),LENGTH_SHORT).show();
+System.out.println(anError.getMessage());
+                }
+            });
+
+//    Intent intent=new Intent(loginactivity.this,sidenavigation.class);
+//startActivity(intent);
+//}
+//else
+//{
+//    Toast.makeText(loginactivity.this,"username or password is incorrect",Toast.LENGTH_SHORT).show();
+//
+//}
             }
         });
         signin.setOnClickListener(new View.OnClickListener() {
