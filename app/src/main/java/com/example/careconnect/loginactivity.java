@@ -33,7 +33,7 @@ SharedPreferences sharedPreferences;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loginactivity);
-        SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         if (sharedPreferences.getString("logged", "").toString().equals("logged")) {
             Intent intent = new Intent(loginactivity.this, sidenavigation.class);
             startActivity(intent);
@@ -61,8 +61,10 @@ int count=d.verifyuser(v);
 //    Toast.makeText(getApplicationContext(), "Successfull Login", Toast.LENGTH_SHORT).show();
 //    //storing the username and password
 //    Toast.makeText(loginactivity.this,"Login Successfully",Toast.LENGTH_SHORT).show();
-
-    AndroidNetworking.get("http://localhost:16345/api/signin?name=rohit&pass=rohit")
+             //   http://192.168.137.1:8044/api/signin
+                AndroidNetworking.get("http://192.168.137.1:8044/api/signin")
+                        .addQueryParameter("name",sname)
+                        .addQueryParameter("pass",spass)
             .addQueryParameter("syncDateTime",null)
             .setTag("test")
             .setPriority(Priority.LOW)
@@ -70,23 +72,32 @@ int count=d.verifyuser(v);
             .getAsObject(checkuser.class, new ParsedRequestListener<checkuser>() {
                 @Override
                 public void onResponse(checkuser response) {
-                    if(response.getMessage()=="not successfull")
+                    if(response.getMessage().equals("nonsuccessfull"))
                     {
                         Toast.makeText(loginactivity.this,"no not working",LENGTH_SHORT).show();
                     }
                     else
                     {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+    SharedPreferences settings = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE );
+                        editor = settings.edit();
+    editor.putString("logged", "logged");
+    editor.commit();
+    Toast.makeText(getApplicationContext(), "Successfull Login", Toast.LENGTH_SHORT).show();
+    //storing the username and password
+    Toast.makeText(loginactivity.this,"Login Successfully",Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(loginactivity.this,getdata.class);
+                startActivity(intent);
                         Toast.makeText(loginactivity.this,"working",LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onError(ANError anError) {
+                    System.out.println(anError.getMessage());
                     Toast.makeText(loginactivity.this,anError.getMessage(),LENGTH_SHORT).show();
-System.out.println(anError.getMessage());
                 }
             });
-
 //    Intent intent=new Intent(loginactivity.this,sidenavigation.class);
 //startActivity(intent);
 //}

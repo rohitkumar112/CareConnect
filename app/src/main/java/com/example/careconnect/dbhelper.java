@@ -19,17 +19,44 @@ public class dbhelper extends SQLiteOpenHelper {
             " [bloodgroup] TEXT ,"+
             " [email] TEXT );"
             ;
+    private static final String CREATE_department_table = "CREATE TABLE [departmentt] ( [departmentid] INTEGER NOT NULL ," +
+            " [departmentname] TEXT );"
+            ;
 
     private static final String table_name="userProfile";
+    private static final String userdepartment="departmentt";
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_USER_TABLE);
+        sqLiteDatabase.execSQL(CREATE_department_table);
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+table_name);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+userdepartment);
+
         onCreate(sqLiteDatabase);
+    }
+    public void userdepartment(userdepartmentmodel user)
+    {
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("departmentid",user.getDepartmentid());
+        contentValues.put("departmentname",user.getDeparatmentname());
+
+        //        contentValues.put("bloodgroup",s.getBloodgroup());
+//        contentValues.put("phonenumber",s.getPhonenumber());
+        SQLiteDatabase db =getWritableDatabase();
+        Long i= db.insert(userdepartment,null,contentValues);
+//        if(i>0)
+//        {
+//
+//            return 1;
+//        }
+//        else
+//        {
+//            return 0;
+//        }
+
     }
     public int insert(signinmodel s)
     {
