@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
         <TextView
             android:layout_width="wrap_content"
-            android:text="implementing drawer"
+            android:text=""
             android:textSize="24sp"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -20,7 +20,14 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
 android:id="@+id/navigate"
-    app:menu="@menu/side_navigation">
 
+
+   >
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <include layout="@layout/side_drawer_layout" />
+
+</LinearLayout>
 </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

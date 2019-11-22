@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -62,7 +61,7 @@ int count=d.verifyuser(v);
 //    //storing the username and password
 //    Toast.makeText(loginactivity.this,"Login Successfully",Toast.LENGTH_SHORT).show();
              //   http://192.168.137.1:8044/api/signin
-                AndroidNetworking.get("http://192.168.137.1:8044/api/signin")
+                AndroidNetworking.get(literals.baseurl)
                         .addQueryParameter("name",sname)
                         .addQueryParameter("pass",spass)
             .addQueryParameter("syncDateTime",null)

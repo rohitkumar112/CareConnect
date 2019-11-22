@@ -56,10 +56,10 @@ sbloodgroup=bloodgroup.getText().toString();
 
 
 
-                AndroidNetworking.post("http://192.168.137.1:8044/api/signin")
+                AndroidNetworking.post(literals.baseurl)
                         //.addBodyParameter(loginModel)
 
-                        .addBodyParameter("id", String.valueOf(44))
+                        .addBodyParameter("id", String.valueOf(58))
                         .addBodyParameter("name",sname)
                         .addBodyParameter("pass",spass)
                         .addBodyParameter("phonenumer",sphonenumber)
