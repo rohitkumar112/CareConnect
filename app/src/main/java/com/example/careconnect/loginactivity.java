@@ -18,6 +18,9 @@ import com.androidnetworking.interfaces.ParsedRequestListener;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class loginactivity extends AppCompatActivity {
@@ -26,17 +29,19 @@ Button login,signin;
     public static final String Name = "nameKey";
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
+    public static dbhelper dbhelpe;
     public static final String MyPREFERENCES = "MyPrefs" ;
 SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbhelpe=new dbhelper(this);
         setContentView(R.layout.activity_loginactivity);
         final SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        if (sharedPreferences.getString("logged", "").toString().equals("logged")) {
-            Intent intent = new Intent(loginactivity.this, sidenavigation.class);
-            startActivity(intent);
-        }
+//        if (sharedPreferences.getString("logged", "").toString().equals("logged")) {
+//            Intent intent = new Intent(loginactivity.this, sidenavigation.class);
+//            startActivity(intent);
+//        }
         name=(EditText)findViewById(R.id.name);
         //  sname=name.
         login=(Button)findViewById(R.id.login);
@@ -85,12 +90,15 @@ int count=d.verifyuser(v);
     Toast.makeText(getApplicationContext(), "Successfull Login", Toast.LENGTH_SHORT).show();
     //storing the username and password
     Toast.makeText(loginactivity.this,"Login Successfully",Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(loginactivity.this,getdata.class);
-                startActivity(intent);
+                        getdepartmentdb getdep=new getdepartmentdb();
+                        List<adddepartmentmodel> adddepartmentmodels=new ArrayList<>();
+                      adddepartmentmodels=  getdep.getdepartment();
+
+                      //                        Intent intent=new Intent(loginactivity.this,adddepartment.class);
+//                startActivity(intent);
                         Toast.makeText(loginactivity.this,"working",LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onError(ANError anError) {
                     System.out.println(anError.getMessage());

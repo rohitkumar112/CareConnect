@@ -19,22 +19,27 @@ public class dbhelper extends SQLiteOpenHelper {
             " [bloodgroup] TEXT ,"+
             " [email] TEXT );"
             ;
-    private static final String CREATE_department_table = "CREATE TABLE [departmentt] ( [departmentid] INTEGER NOT NULL ," +
+    private static final String CREATE_department_table = "CREATE TABLE [departmentt] ( [departmentid] INTEGER NOT NULL PRIMARY KEY ," +
+            " [departmentname] TEXT );"
+            ;
+    private static final String CREATE_department = "CREATE TABLE [department] ( [departmentid] INTEGER NOT NULL PRIMARY KEY ," +
             " [departmentname] TEXT );"
             ;
 
     private static final String table_name="userProfile";
     private static final String userdepartment="departmentt";
+    private static final String department="department";
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_USER_TABLE);
         sqLiteDatabase.execSQL(CREATE_department_table);
+        sqLiteDatabase.execSQL(CREATE_department);
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+table_name);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+userdepartment);
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+department);
         onCreate(sqLiteDatabase);
     }
     public void userdepartment(userdepartmentmodel user)
@@ -57,6 +62,24 @@ public class dbhelper extends SQLiteOpenHelper {
 //            return 0;
 //        }
 
+    }
+    public int adddepartment(adddepartmentmodel adddepartmentmodel)
+    {
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("departmentid",adddepartmentmodel.getId());
+        contentValues.put("departmentname",adddepartmentmodel.getName());
+        //        contentValues.put("bloodgroup",s.getBloodgroup());
+//        contentValues.put("phonenumber",s.getPhonenumber());
+        SQLiteDatabase db =getWritableDatabase();
+        Long i= db.insert(department,null,contentValues);
+        if(i>0)
+        {
+            return  1;
+        }
+        else
+        {
+            return 0;
+        }
     }
     public int insert(signinmodel s)
     {
